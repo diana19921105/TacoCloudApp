@@ -22,11 +22,9 @@ import java.security.Principal;
 @RequestMapping("/orders")
 public class OrderController {
     private final OrderService orderService;
-    private final UserService userService;
 
-    public OrderController(OrderService orderService, UserService userService) {
+    public OrderController(OrderService orderService) {
         this.orderService = orderService;
-        this.userService = userService;
     }
 
     @GetMapping("/current")

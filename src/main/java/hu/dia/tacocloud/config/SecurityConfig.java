@@ -1,6 +1,5 @@
 package hu.dia.tacocloud.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -15,8 +14,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @EnableWebSecurity
 @ComponentScan("hu.dia")
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    @Autowired
-    private UserDetailsService userService;
+    private final UserDetailsService userService;
+
+    public SecurityConfig(UserDetailsService userService) {
+        this.userService = userService;
+    }
 
     @Bean
     public BCryptPasswordEncoder encoder() {
@@ -26,22 +28,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth)
             throws Exception {
-//        auth.inMemoryAuthentication()
-//                .withUser("buzz")
-//                .password("infinity")
-//                .authorities("ROLE_USER")
-//                .and()
-//                .withUser("woody")
-//                .password("bullseye")
-//                .authorities("ROLE_USER");
-
-//        auth.jdbcAuthentication()
-//                .dataSource(source)
-//                .usersByUsernameQuery("select username, password, enabled from Users " +
-//                        "where username=?")
-//                .authoritiesByUsernameQuery("select username, authority from UserAuthorities " +
-//                        "where username=?")
-//                .passwordEncoder(new BCryptPasswordEncoder());
 
         auth.userDetailsService(userService)
                 .passwordEncoder(encoder());
